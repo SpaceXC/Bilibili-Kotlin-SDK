@@ -1,9 +1,9 @@
 package cn.spacexc.bilibilisdk.sdk.video.info.remote.info.app
 
-data class Vip(
+data class VipX(
     val accessStatus: Int,
     val dueRemark: String,
-    val label: Label?,
+    val label: LabelX?,
     val themeType: Int,
     val vipDueDate: Long,
     val vipStatus: Int,

@@ -4,9 +4,10 @@ import cn.spacexc.bilibilisdk.data.DataManager
 import cn.spacexc.bilibilisdk.data.KtorCookiesManager
 import cn.spacexc.bilibilisdk.data.SimpleDataManager
 import cn.spacexc.bilibilisdk.network.KtorNetworkUtils
-import cn.spacexc.bilibilisdk.sdk.user.webi.WebiSignature
-import cn.spacexc.bilibilisdk.sdk.video.info.VideoInfo
-import kotlinx.coroutines.*
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.runBlocking
 
 /**
  * Created by XC-Qan on 2023/5/25.
@@ -37,6 +38,5 @@ object BilibiliSdkManager {
 fun main() {
     runBlocking {
         BilibiliSdkManager.initSdk()
-
     }
 }

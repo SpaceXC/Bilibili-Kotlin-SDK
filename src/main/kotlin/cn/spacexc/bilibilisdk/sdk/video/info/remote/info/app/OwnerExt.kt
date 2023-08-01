@@ -6,5 +6,5 @@ data class OwnerExt(
     val fans: Int,
     val nft_face_icon: Any,
     val official_verify: OfficialVerify,
-    val vip: Vip
+    val vip: Vip?
 )

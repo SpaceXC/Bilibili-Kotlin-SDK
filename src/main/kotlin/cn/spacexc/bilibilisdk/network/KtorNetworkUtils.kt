@@ -2,19 +2,24 @@ package cn.spacexc.bilibilisdk.network
 
 import cn.spacexc.bilibilisdk.BilibiliSdkManager
 import cn.spacexc.bilibilisdk.utils.EncryptUtils
-import io.ktor.client.*
-import io.ktor.client.call.*
-import io.ktor.client.engine.cio.*
-import io.ktor.client.plugins.contentnegotiation.*
+import io.ktor.client.HttpClient
+import io.ktor.client.call.body
+import io.ktor.client.engine.cio.CIO
+import io.ktor.client.plugins.contentnegotiation.ContentNegotiation
 import io.ktor.client.plugins.cookies.HttpCookies
-import io.ktor.client.plugins.logging.*
-import io.ktor.client.request.*
-import io.ktor.client.request.forms.*
+import io.ktor.client.plugins.logging.LogLevel
+import io.ktor.client.plugins.logging.Logger
+import io.ktor.client.plugins.logging.Logging
+import io.ktor.client.plugins.logging.SIMPLE
+import io.ktor.client.request.HttpRequestBuilder
+import io.ktor.client.request.forms.submitForm
+import io.ktor.client.request.get
+import io.ktor.client.request.header
 import io.ktor.client.statement.readBytes
-import io.ktor.http.*
-import io.ktor.serialization.gson.*
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.withContext
+import io.ktor.http.HttpStatusCode
+import io.ktor.http.Parameters
+import io.ktor.http.userAgent
+import io.ktor.serialization.gson.gson
 
 /**
  * Created by XC-Qan on 2023/3/22.
@@ -82,16 +87,9 @@ internal object KtorNetworkUtils {
                 val body = response.body<BasicResponseDto>()
                 NetworkResponse.Failed(code = body.code, message = body.message, null)
             }
-        } /*catch (e: SocketException) {
-            NetworkResponse.Failed(code = -1, message = e.message ?: "Unknown error", null)
-        } catch (e: JsonSyntaxException) {
-            NetworkResponse.Failed(code = -1, message = e.message ?: "Unknown error", null)
-        } catch (e: JsonConvertException) {
-            NetworkResponse.Failed(code = -1, message = e.message ?: "Unknown error", null)
-        } catch (e: UnresolvedAddressException) {
-            NetworkResponse.Failed(code = -1, message = e.message ?: "Unknown error", null)
-        } */ catch (e: Exception) {
+        } catch (e: Exception) {
             e.printStackTrace()
+            println("Error occurred: ${e.stackTraceToString()}")
             NetworkResponse.Failed(code = -1, message = e.message ?: "Unknown error", null)
         }
     }
@@ -107,15 +105,7 @@ internal object KtorNetworkUtils {
                 builder()
             }
             return response.readBytes()
-        } /*catch (e: SocketException) {
-            NetworkResponse.Failed(code = -1, message = e.message ?: "Unknown error", null)
-        } catch (e: JsonSyntaxException) {
-            NetworkResponse.Failed(code = -1, message = e.message ?: "Unknown error", null)
-        } catch (e: JsonConvertException) {
-            NetworkResponse.Failed(code = -1, message = e.message ?: "Unknown error", null)
-        } catch (e: UnresolvedAddressException) {
-            NetworkResponse.Failed(code = -1, message = e.message ?: "Unknown error", null)
-        } */ catch (e: Exception) {
+        } catch (e: Exception) {
             e.printStackTrace()
             null
         }
@@ -140,35 +130,6 @@ internal object KtorNetworkUtils {
 
         } else origParams
         return get(url = "$host?$signedParams", builder = builder)
-        /*val response = client.get() {
-            userAgent(USER_AGENT)
-            header("Referer", BASE_URL)
-            builder()
-        }
-        return if (response.status == HttpStatusCode.OK) {
-            val bodyInfo = response.body<BasicResponseDto>()
-            val body = response.body<T>()
-            if (bodyInfo.code != 0) {
-                NetworkResponse.Failed(code = bodyInfo.code, message = bodyInfo.message)
-            } else {
-                NetworkResponse.Success(body)
-            }
-        } else {
-            val body = response.body<BasicResponseDto>()
-            NetworkResponse.Failed(code = body.code, message = body.message, null)
-        }
-    } *//*catch (e: SocketException) {
-            NetworkResponse.Failed(code = -1, message = e.message ?: "Unknown error", null)
-        } catch (e: JsonSyntaxException) {
-            NetworkResponse.Failed(code = -1, message = e.message ?: "Unknown error", null)
-        } catch (e: JsonConvertException) {
-            NetworkResponse.Failed(code = -1, message = e.message ?: "Unknown error", null)
-        } catch (e: UnresolvedAddressException) {
-            NetworkResponse.Failed(code = -1, message = e.message ?: "Unknown error", null)
-        } *//* catch (e: Exception) {
-            e.printStackTrace()
-            NetworkResponse.Failed(code = -1, message = e.message ?: "Unknown error", null)
-        }*/
     }
 
     suspend inline fun <reified T> getWithAppSign(
@@ -212,15 +173,7 @@ internal object KtorNetworkUtils {
                 val body = response.body<BasicResponseDto>()
                 NetworkResponse.Failed(code = body.code, message = body.message, null)
             }
-        } /*catch (e: SocketException) {
-            NetworkResponse.Failed(code = -1, message = e.message ?: "Unknown error", null)
-        } catch (e: JsonSyntaxException) {
-            NetworkResponse.Failed(code = -1, message = e.message ?: "Unknown error", null)
-        } catch (e: JsonConvertException) {
-            NetworkResponse.Failed(code = -1, message = e.message ?: "Unknown error", null)
-        } catch (e: UnresolvedAddressException) {
-            NetworkResponse.Failed(code = -1, message = e.message ?: "Unknown error", null)
-        }*/ catch (e: Exception) {
+        } catch (e: Exception) {
             e.printStackTrace()
             NetworkResponse.Failed(code = -1, message = e.message ?: "Unknown error", null)
         }

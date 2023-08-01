@@ -6,6 +6,7 @@ import cn.spacexc.bilibilisdk.network.configurations
 import cn.spacexc.bilibilisdk.sdk.video.info.remote.info.app.AppVideoInfo
 import cn.spacexc.bilibilisdk.sdk.video.info.remote.info.web.WebVideoInfo
 import cn.spacexc.bilibilisdk.sdk.video.info.remote.online.OnlineCountInfo
+import cn.spacexc.bilibilisdk.sdk.video.info.remote.playerinfo.PlayerInfo
 import cn.spacexc.bilibilisdk.sdk.video.info.remote.playurl.VideoPlaybackUrl
 import cn.spacexc.bilibilisdk.sdk.video.info.remote.playurl.lowresolution.VideoLowResolutionPlaybackUrl
 import cn.spacexc.bilibilisdk.sdk.video.info.remote.related.RelatedVideos
@@ -35,7 +36,10 @@ object VideoInfo {
         return KtorNetworkUtils.get("https://api.bilibili.com/x/web-interface/view?$videoIdType=$videoId")
     }
 
-    suspend fun getVideoInfoByIdApp(videoIdType: String, videoId: String): NetworkResponse<AppVideoInfo> {
+    suspend fun getVideoInfoByIdApp(
+        videoIdType: String,
+        videoId: String
+    ): NetworkResponse<AppVideoInfo> {
         return KtorNetworkUtils.getWithAppSign(
             host = "https://app.bilibili.com/x/v2/view",
             origParams = "access_key=${UserUtils.accessKey()}&build=${configurations["build"]}&$videoIdType=$videoId&mobi_app=${configurations["mobi_app"]}&plat=0&platform=${configurations["platform"]}&ts=${(System.currentTimeMillis() / 1000).toInt()}"
@@ -113,6 +117,30 @@ object VideoInfo {
         videoId: String
     ): NetworkResponse<RelatedVideos> =
         KtorNetworkUtils.get("https://api.bilibili.com/x/web-interface/archive/related?$videoIdType=$videoId")
+
+    suspend fun getVideoPlayerInfo(
+        videoIdType: String = "bvid",
+        videoId: String,
+        videoCid: Long,
+        webiSignatureKey: String? = null
+    ): NetworkResponse<PlayerInfo> {
+        return KtorNetworkUtils.getWithWebiSignature(
+            host = "https://api.bilibili.com/x/player/wbi/v2",
+            origParams = "$videoIdType=$videoId&cid=$videoCid",
+            webiSignatureKey = webiSignatureKey
+        )
+    }
+
+    suspend fun getVideoPlayUrlForTv(
+        videoCid: Long
+    ): NetworkResponse<String> {
+        return KtorNetworkUtils.getWithAppSign(
+            host = "https://api.bilibili.com/x/tv/playurl",
+            origParams = "access_key=${UserUtils.accessKey()}&actionKey=appkey&build=73800100&c_locale=zh-Hans_CN&cid=$videoCid&device=pad&device_type=0&disable_rcmd=0&fourk=1&is_dolby=0&is_h265=0&is_proj=1&live_extra=%7B%0A%20%20%22ott_build%22%20%3A%20%220%22%2C%0A%20%20%22need_hdr%22%20%3A%20%220%22%0A%7D&mobi_app=iphone&mobile_access_key=${UserUtils.accessKey()}&model=iPad%20Pro%2012.9-Inch%203G&mp4_proj=0&object_id=508404&ogv_aid=641107054&platform=ios&playurl_type=2&protocol=0&qn=64&s_locale=zh-Hans_CH&sign=7c9cb576e7d2f7185d70bdac2d09d5f8&statistics=%7B%22appId%22%3A1%2C%22version%22%3A%227.38.0%22%2C%22abtest%22%3A%22%22%2C%22platform%22%3A2%7D&ts=1689865333"//"access_key=${UserUtils.accessKey()}&actionKey=appkey&appkey=27eb53fc9058f8c3&build=73600200&c_locale=zh-Hans_CN&cid=$videoCid&device=pad&device_type=0&disable_rcmd=0&fourk=0&is_dolby=0&is_h265=0&is_proj=1&live_extra=%7B%0A%20%20%22ott_build%22%20%3A%20%220%22%2C%0A%20%20%22need_hdr%22%20%3A%20%220%22%0A%7D&mobi_app=iphone&mobile_access_key=${UserUtils.accessKey()}&model=iPad%20Pro%2012.9-Inch%203G&mp4_proj=0&object_id=273465710&ogv_aid=&platform=ios&playurl_type=1&protocol=0&qn=64&s_locale=zh-Hans_CH&statistics=%7B%22appId%22%3A1%2C%22version%22%3A%227.36.0%22%2C%22abtest%22%3A%22%22%2C%22platform%22%3A2%7D&ts=${System.currentTimeMillis()}"
+            //这个参数真的好复杂（（（完全没有研究透属于是，搞不好第二天就出问题（
+            //参数删太多会404（
+        )
+    }
 
     /**
      *  解压弹幕数据

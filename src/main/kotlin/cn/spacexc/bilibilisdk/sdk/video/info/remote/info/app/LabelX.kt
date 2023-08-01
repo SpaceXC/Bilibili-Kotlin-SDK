@@ -1,6 +1,6 @@
 package cn.spacexc.bilibilisdk.sdk.video.info.remote.info.app
 
-data class Label(
+data class LabelX(
     val bg_color: String?,
     val bg_style: Int,
     val border_color: String,
