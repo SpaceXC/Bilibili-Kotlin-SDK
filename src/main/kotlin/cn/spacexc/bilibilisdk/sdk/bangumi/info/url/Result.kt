@@ -1,0 +1,31 @@
+package cn.spacexc.bilibilisdk.sdk.bangumi.info.url
+
+data class Result(
+    val accept_description: List<String>,
+    val accept_format: String,
+    val accept_quality: List<Int>,
+    val bp: Int,
+    val clip_info_list: List<Any>,
+    val code: Int,
+    val durl: List<Durl>,
+    val fnval: Int,
+    val fnver: Int,
+    val format: String,
+    val from: String,
+    val has_paid: Boolean,
+    val is_drm: Boolean,
+    val is_preview: Int,
+    val message: String,
+    val no_rexcode: Int,
+    val quality: Int,
+    val record_info: RecordInfo,
+    val result: String,
+    val seek_param: String,
+    val seek_type: String,
+    val status: Int,
+    val support_formats: List<SupportFormat>,
+    val timelength: Int,
+    val type: String,
+    val video_codecid: Long,
+    val video_project: Boolean
+)
