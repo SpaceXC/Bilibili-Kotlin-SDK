@@ -1,8 +1,9 @@
 import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
 
 plugins {
-    kotlin("jvm") version "1.8.10"
-    id("org.jetbrains.kotlin.plugin.atomicfu") version "1.8.10"
+    kotlin("jvm") version "1.9.0"
+    id("org.jetbrains.kotlin.plugin.atomicfu") version "1.9.0"
+    `maven-publish`
     application
 }
 
@@ -11,6 +12,12 @@ version = "1.0-SNAPSHOT"
 
 repositories {
     mavenCentral()
+    google()
+    maven("https://maven.pkg.jetbrains.space/public/p/compose/dev")
+}
+
+kotlin {
+
 }
 
 dependencies {
@@ -26,6 +33,25 @@ dependencies {
 
     val kotlinxAtomifuVersion = "0.20.1"
     implementation("org.jetbrains.kotlinx:atomicfu:$kotlinxAtomifuVersion")
+}
+
+val localRepositoryPath = file("${System.getProperty("user.home")}/.m2/repository")
+
+publishing {
+    publications {
+        create<MavenPublication>("mavenJava") {
+            from(components["java"])
+
+            groupId = this.groupId
+            artifactId = project.name
+            version = this.version
+        }
+    }
+
+    repositories {
+        mavenLocal() // 发布到本地仓库
+        // 你还可以添加其他远程仓库配置
+    }
 }
 
 tasks.test {

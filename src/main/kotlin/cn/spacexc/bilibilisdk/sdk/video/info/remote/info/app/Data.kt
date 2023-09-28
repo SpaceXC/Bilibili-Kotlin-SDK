@@ -49,5 +49,6 @@ data class Data(
     val tid: Long,
     val title: String,
     val tname: String,
-    val videos: Int
+    val videos: Int,
+    val season: Season?
 )
