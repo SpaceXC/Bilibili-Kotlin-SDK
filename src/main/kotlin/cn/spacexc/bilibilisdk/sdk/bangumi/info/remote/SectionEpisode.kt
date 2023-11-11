@@ -1,6 +1,6 @@
 package cn.spacexc.bilibilisdk.sdk.bangumi.info.remote
 
-data class EpisodeX(
+data class SectionEpisode(
     val aid: Long,
     val badge: String,
     val badge_info: BadgeInfo,
@@ -10,12 +10,13 @@ data class EpisodeX(
     val cover: String,
     val duration: Int,
     val enable_vt: Boolean,
-    val ep_id: Long,
+    val ep_id: Long?,
     val from: String,
     val icon_font: IconFont,
     val id: Long,
     val is_view_hide: Boolean,
     val link: String,
+    val link_type: String,
     val long_title: String,
     val pub_time: Int,
     val pv: Int,

@@ -64,7 +64,7 @@ data class Data(
     val timelength: Int,
     val type: Int,
     @SerializedName("video_codecid")
-    val videoCodecid: Int,
+    val videoCodecid: Long,
     @SerializedName("video_project")
     val videoProject: Boolean,
     @SerializedName("vip_status")

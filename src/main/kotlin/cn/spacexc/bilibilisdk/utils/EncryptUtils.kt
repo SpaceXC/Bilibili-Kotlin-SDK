@@ -1,12 +1,8 @@
 package cn.spacexc.bilibilisdk.utils
 
 import java.math.BigInteger
-import java.security.KeyFactory
 import java.security.MessageDigest
 import java.security.NoSuchAlgorithmException
-import java.security.interfaces.RSAPublicKey
-import java.security.spec.X509EncodedKeySpec
-import javax.crypto.Cipher
 
 /**
  * Some part of this file is copied from luern0313's repository WristBili
@@ -40,6 +36,19 @@ object EncryptUtils {
     fun getAppSign(type: AppSignType, params: String): String {
         val content = "${params}${appSecrets[type]}"
         return md5(content)
+    }
+
+    fun generateBuvid(): String {
+        val mac = mutableListOf<String>()
+        for (i in 0 until 6) {
+            val min = 0
+            val max = 0xff
+            val num = (Math.random() * (max - min + 1) + min).toInt().toString(16)
+            mac.add(num)
+        }
+        val md5 = md5(mac.joinToString(":"))
+        val md5Arr = md5.split("").toTypedArray()
+        return "XY${md5Arr[2]}${md5Arr[12]}${md5Arr[22]}$md5"
     }
 
     fun md5(plainText: String): String {

@@ -15,10 +15,17 @@ import cn.spacexc.bilibilisdk.utils.remote.UserExitResult
 object UserUtils  {
     suspend fun isUserLoggedIn(): Boolean =
         !BilibiliSdkManager.cookiesManager.getCookieByName("SESSDATA")?.value.isNullOrEmpty()
-    suspend fun mid(): Long? = BilibiliSdkManager.cookiesManager.getCookieByName("DedeUserID")?.value?.toLong()
-    suspend fun csrf(): String? = BilibiliSdkManager.cookiesManager.getCookieByName("bili_jct")?.value
-    suspend fun accessKey(): String? = BilibiliSdkManager.dataManager.getString("accessKey", null)
-    suspend fun webiSign(): String? = BilibiliSdkManager.dataManager.getString("webi_signature_key", null)
+
+    suspend fun mid(): Long? =
+        BilibiliSdkManager.cookiesManager.getCookieByName("DedeUserID")?.value?.toLong()
+
+    suspend fun csrf(): String? =
+        BilibiliSdkManager.cookiesManager.getCookieByName("bili_jct")?.value
+
+    suspend fun webiSign(): String? =
+        BilibiliSdkManager.dataManager.getString("webi_signature_key", null)
+
+    suspend fun getBuvid(): String? = BilibiliSdkManager.dataManager.getString("buvid")
 
     suspend fun logout(): Boolean {
         val form = mapOf(

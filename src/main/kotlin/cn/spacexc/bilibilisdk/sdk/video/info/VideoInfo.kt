@@ -5,6 +5,7 @@ import cn.spacexc.bilibilisdk.network.NetworkResponse
 import cn.spacexc.bilibilisdk.network.configurations
 import cn.spacexc.bilibilisdk.sdk.video.info.remote.info.app.AppVideoInfo
 import cn.spacexc.bilibilisdk.sdk.video.info.remote.info.web.WebVideoInfo
+import cn.spacexc.bilibilisdk.sdk.video.info.remote.info.web.detailed.WebVideoDetailedInformation
 import cn.spacexc.bilibilisdk.sdk.video.info.remote.online.OnlineCountInfo
 import cn.spacexc.bilibilisdk.sdk.video.info.remote.playerinfo.PlayerInfo
 import cn.spacexc.bilibilisdk.sdk.video.info.remote.playurl.VideoPlaybackUrl
@@ -15,7 +16,6 @@ import cn.spacexc.bilibilisdk.sdk.video.info.remote.state.CoinState
 import cn.spacexc.bilibilisdk.sdk.video.info.remote.state.FavState
 import cn.spacexc.bilibilisdk.sdk.video.info.remote.state.LikeState
 import cn.spacexc.bilibilisdk.sdk.video.info.remote.subtitle.SubtitleFile
-import cn.spacexc.bilibilisdk.utils.UserUtils
 import java.io.ByteArrayOutputStream
 import java.io.IOException
 import java.io.InputStream
@@ -37,13 +37,20 @@ object VideoInfo {
         return KtorNetworkUtils.get("https://api.bilibili.com/x/web-interface/view?$videoIdType=$videoId")
     }
 
+    suspend fun getVideoDetailedInfoByIdWeb(
+        videoIdType: String,
+        videoId: String
+    ): NetworkResponse<WebVideoDetailedInformation> {
+        return KtorNetworkUtils.get("https://api.bilibili.com/x/web-interface/view/detail?$videoIdType=$videoId")
+    }
+
     suspend fun getVideoInfoByIdApp(
         videoIdType: String,
         videoId: String
     ): NetworkResponse<AppVideoInfo> {
         return KtorNetworkUtils.getWithAppSign(
             host = "https://app.bilibili.com/x/v2/view",
-            origParams = "access_key=${UserUtils.accessKey()}&build=${configurations["build"]}&$videoIdType=$videoId&mobi_app=${configurations["mobi_app"]}&plat=0&platform=${configurations["platform"]}&ts=${(System.currentTimeMillis() / 1000).toInt()}"
+            origParams = "build=${configurations["build"]}&$videoIdType=$videoId&mobi_app=${configurations["mobi_app"]}&plat=0&platform=${configurations["platform"]}&ts=${(System.currentTimeMillis() / 1000).toInt()}"
         )
     }
 
@@ -141,8 +148,8 @@ object VideoInfo {
         return KtorNetworkUtils.getWithAppSign(
             host = "https://api.bilibili.com/x/tv/playurl",
             origParams =
-            if (isBangumi) "access_key=${UserUtils.accessKey()}&build=75100100&c_locale=zh-Hans_CN&cid=$videoCid&mobi_app=iphone&platform=ios&playurl_type=2&qn=64&s_locale=zh-Hans_CH&statistics=$statistics&ts=${System.currentTimeMillis()}"
-            else "access_key=${UserUtils.accessKey()}&build=75100100&c_locale=zh-Hans_CN&cid=$videoCid&mobi_app=iphone&platform=ios&playurl_type=1&qn=64&s_locale=zh-Hans_CH&statistics=$statistics&ts=${System.currentTimeMillis()}"
+            if (isBangumi) "build=75100100&c_locale=zh-Hans_CN&cid=$videoCid&mobi_app=iphone&platform=ios&playurl_type=2&qn=64&s_locale=zh-Hans_CH&statistics=$statistics&ts=${System.currentTimeMillis()}"
+            else "build=75100100&c_locale=zh-Hans_CN&cid=$videoCid&mobi_app=iphone&platform=ios&playurl_type=1&qn=64&s_locale=zh-Hans_CH&statistics=$statistics&ts=${System.currentTimeMillis()}"
         )
     }
 
