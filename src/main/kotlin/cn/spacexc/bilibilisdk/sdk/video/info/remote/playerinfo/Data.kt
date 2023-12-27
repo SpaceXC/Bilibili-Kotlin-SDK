@@ -9,7 +9,7 @@ data class Data(
     val bvid: String,
     val cid: Long,
     val disable_show_up_info: Boolean,
-    val dm_mask: DmMask,
+    val dm_mask: DmMask?,
     val elec_high_level: ElecHighLevel,
     val fawkes: Fawkes,
     val guide_attention: List<GuideAttention>,

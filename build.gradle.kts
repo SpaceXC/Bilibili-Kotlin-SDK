@@ -27,12 +27,16 @@ dependencies {
     implementation("io.ktor:ktor-client-logging:$ktorVersion")
     implementation("io.ktor:ktor-client-content-negotiation:$ktorVersion")
     implementation("io.ktor:ktor-serialization-gson:$ktorVersion")
+    implementation("io.ktor:ktor-serialization-kotlinx-protobuf:$ktorVersion")
 
     val gsonVersion = "2.10.1"
     implementation("com.google.code.gson:gson:$gsonVersion")
 
     val kotlinxAtomifuVersion = "0.20.1"
     implementation("org.jetbrains.kotlinx:atomicfu:$kotlinxAtomifuVersion")
+
+    val commonsVersion = "2.4"
+    //implementation("org.apache.directory.studio:org.apache.commons.io:$commonsVersion")
 }
 
 val localRepositoryPath = file("${System.getProperty("user.home")}/.m2/repository")

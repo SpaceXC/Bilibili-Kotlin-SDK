@@ -7,6 +7,7 @@ import cn.spacexc.bilibilisdk.sdk.video.info.remote.info.app.AppVideoInfo
 import cn.spacexc.bilibilisdk.sdk.video.info.remote.info.web.WebVideoInfo
 import cn.spacexc.bilibilisdk.sdk.video.info.remote.info.web.detailed.WebVideoDetailedInformation
 import cn.spacexc.bilibilisdk.sdk.video.info.remote.online.OnlineCountInfo
+import cn.spacexc.bilibilisdk.sdk.video.info.remote.playerinfo.DmMask
 import cn.spacexc.bilibilisdk.sdk.video.info.remote.playerinfo.PlayerInfo
 import cn.spacexc.bilibilisdk.sdk.video.info.remote.playurl.VideoPlaybackUrl
 import cn.spacexc.bilibilisdk.sdk.video.info.remote.playurl.lowresolution.VideoLowResolutionPlaybackUrl
@@ -16,7 +17,9 @@ import cn.spacexc.bilibilisdk.sdk.video.info.remote.state.CoinState
 import cn.spacexc.bilibilisdk.sdk.video.info.remote.state.FavState
 import cn.spacexc.bilibilisdk.sdk.video.info.remote.state.LikeState
 import cn.spacexc.bilibilisdk.sdk.video.info.remote.subtitle.SubtitleFile
+//import org.apache.commons.io.IOUtils
 import java.io.ByteArrayOutputStream
+import java.io.File
 import java.io.IOException
 import java.io.InputStream
 import java.util.zip.Inflater
@@ -109,7 +112,7 @@ object VideoInfo {
     suspend fun getVideoDanmaku(cid: Long): InputStream? {
         val byteArray =
             KtorNetworkUtils.getBytes("https://api.bilibili.com/x/v1/dm/list.so?oid=$cid")
-        return decompressDanmakuData(byteArray)?.inputStream()
+        return decompressData(byteArray)?.inputStream()
     }
 
     suspend fun getOnlineCount(
@@ -139,6 +142,24 @@ object VideoInfo {
         )
     }
 
+    suspend fun downloadDanmakuWebMask(
+        maskInfo: DmMask,
+        file: File
+    ): NetworkResponse<File> {
+        val url = maskInfo.mask_url
+        val bytes = KtorNetworkUtils.getBytes(url)
+        bytes?.let {
+            return try {
+                //IOUtils.copy(bytes.inputStream(), file.outputStream())
+                NetworkResponse.Success(file)
+            } catch (e: Exception) {
+                e.printStackTrace()
+                NetworkResponse.Failed(-1, "Failed to download danmaku mask", null)
+            }
+        }
+        return NetworkResponse.Failed(-1, "Failed to download danmaku mask", null)
+    }
+
     suspend fun getVideoPlayUrlForTv(
         videoCid: Long,
         isBangumi: Boolean
@@ -157,7 +178,7 @@ object VideoInfo {
      *  解压弹幕数据
      *  From CSDN
      */
-    private fun decompressDanmakuData(data: ByteArray?): ByteArray? {
+    private fun decompressData(data: ByteArray?): ByteArray? {
         var output: ByteArray?
         val decompresser = Inflater(true)
         decompresser.reset()
