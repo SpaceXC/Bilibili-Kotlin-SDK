@@ -40,6 +40,6 @@ data class Data(
     val show_switch: ShowSwitch,
     val subtitle: SubtitleList,
     val toast_block: Boolean,
-    val view_points: List<Any>,
+    val view_points: List<ViewPoint>,
     val vip: Vip
 )

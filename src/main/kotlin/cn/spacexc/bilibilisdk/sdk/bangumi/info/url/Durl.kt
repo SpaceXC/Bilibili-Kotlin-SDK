@@ -6,7 +6,7 @@ data class Durl(
     val length: Int,
     val md5: String,
     val order: Int,
-    val size: Int,
+    val size: Long,
     val url: String,
     val vhead: String
 )
