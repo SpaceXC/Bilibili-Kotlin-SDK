@@ -144,20 +144,13 @@ object VideoInfo {
 
     suspend fun downloadDanmakuWebMask(
         maskInfo: DmMask,
-        file: File
-    ): NetworkResponse<File> {
+        file: File,
+        onDownloadFinished: (Boolean) -> Unit
+    ) {
         val url = maskInfo.mask_url
-        val bytes = KtorNetworkUtils.getBytes(url)
-        bytes?.let {
-            return try {
-                //IOUtils.copy(bytes.inputStream(), file.outputStream())
-                NetworkResponse.Success(file)
-            } catch (e: Exception) {
-                e.printStackTrace()
-                NetworkResponse.Failed(-1, "Failed to download danmaku mask", null)
-            }
-        }
-        return NetworkResponse.Failed(-1, "Failed to download danmaku mask", null)
+
+        KtorNetworkUtils.downloadFile(url, file, {}, onDownloadFinished)
+        //return NetworkResponse.Failed(-1, "Failed to download danmaku mask", null)
     }
 
     suspend fun getVideoPlayUrlForTv(

@@ -15,11 +15,18 @@ import io.ktor.client.request.HttpRequestBuilder
 import io.ktor.client.request.forms.submitForm
 import io.ktor.client.request.get
 import io.ktor.client.request.header
+import io.ktor.client.request.prepareGet
 import io.ktor.client.statement.readBytes
 import io.ktor.http.HttpStatusCode
 import io.ktor.http.Parameters
+import io.ktor.http.contentLength
 import io.ktor.http.userAgent
 import io.ktor.serialization.gson.gson
+import io.ktor.utils.io.ByteReadChannel
+import io.ktor.utils.io.core.isEmpty
+import io.ktor.utils.io.core.readBytes
+import kotlinx.coroutines.runBlocking
+import java.io.File
 
 /**
  * Created by XC-Qan on 2023/3/22.
@@ -176,6 +183,38 @@ internal object KtorNetworkUtils {
         } catch (e: Exception) {
             e.printStackTrace()
             NetworkResponse.Failed(code = -1, message = e.message ?: "Unknown error", null)
+        }
+    }
+
+    suspend fun downloadFile(
+        url: String,
+        file: File,
+        onProgressUpdate: (Float) -> Unit,
+        onDownloadFinished: (Boolean) -> Unit
+    ) {
+        runBlocking {
+            client.prepareGet(url) {
+                header("User-Agent", "Mozilla/5.0 BiliDroid/*.*.* (bbcallen@gmail.com)")
+                header("Referer", "https://bilibili.com/")
+            }.execute { httpResponse ->
+                try {
+                    val channel: ByteReadChannel = httpResponse.body()
+                    while (!channel.isClosedForRead) {
+                        val packet = channel.readRemaining(DEFAULT_BUFFER_SIZE.toLong())
+                        while (!packet.isEmpty) {
+                            val bytes = packet.readBytes()
+                            file.appendBytes(bytes)
+                            onProgressUpdate(
+                                file.length().toFloat() / (httpResponse.contentLength()
+                                    ?: 1).toInt()
+                            )
+                        }
+                    }
+                    onDownloadFinished(true)
+                } catch (e: Exception) {
+                    onDownloadFinished(false)
+                }
+            }
         }
     }
 }
