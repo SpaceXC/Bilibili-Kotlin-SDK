@@ -14,7 +14,7 @@ data class Tag(
     val cover: String,
     val ctime: Int,
     @SerializedName("extra_attr")
-    val extraAttr: Int,
+    val extraattr: Long,
     @SerializedName("featured_count")
     val featuredCount: Int,
     val hated: Int,

@@ -1,7 +1,7 @@
 package cn.spacexc.bilibilisdk.sdk.user.favorite.info.remote.content
 
 data class Info(
-    val attr: Int,
+    val attr: Long,
     val cover: String,
     val cover_type: Int,
     val ctime: Int,

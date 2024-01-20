@@ -6,7 +6,7 @@ import com.google.gson.annotations.SerializedName
 data class ReplyX(
     val action: Int,
     val assist: Int,
-    val attr: Int,
+    val attr: Long,
     val content: Any,
     val count: Int,
     val ctime: Int,

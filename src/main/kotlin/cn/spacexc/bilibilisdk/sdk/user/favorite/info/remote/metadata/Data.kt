@@ -1,7 +1,7 @@
 package cn.spacexc.bilibilisdk.sdk.user.favorite.info.remote.metadata
 
 data class Data(
-    val attr: Int,
+    val attr: Long,
     val cnt_info: CntInfo,
     val cover: String,
     val cover_type: Int,

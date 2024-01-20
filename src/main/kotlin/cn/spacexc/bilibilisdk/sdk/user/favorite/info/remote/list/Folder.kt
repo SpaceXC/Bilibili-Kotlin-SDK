@@ -1,7 +1,7 @@
 package cn.spacexc.bilibilisdk.sdk.user.favorite.info.remote.list
 
 data class Folder(
-    val attr: Int,
+    val attr: Long,
     val fav_state: Int,
     val fid: Long,
     val id: Long,
