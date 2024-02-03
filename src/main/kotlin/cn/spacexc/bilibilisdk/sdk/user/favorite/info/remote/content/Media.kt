@@ -1,7 +1,7 @@
 package cn.spacexc.bilibilisdk.sdk.user.favorite.info.remote.content
 
 data class Media(
-    val attr: Int,
+    val attr: Long,
     val bv_id: String,
     val bvid: String,
     val cnt_info: CntInfo,
