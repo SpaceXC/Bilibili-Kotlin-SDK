@@ -16,6 +16,6 @@ data class Data(
     val seek_param: String,
     val seek_type: String,
     val support_formats: List<SupportFormat>,
-    val timelength: Int,
+    val timelength: Long,
     val video_codecid: Long
 )

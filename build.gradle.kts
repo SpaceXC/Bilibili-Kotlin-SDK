@@ -35,6 +35,8 @@ dependencies {
     val kotlinxAtomifuVersion = "0.20.1"
     implementation("org.jetbrains.kotlinx:atomicfu:$kotlinxAtomifuVersion")
 
+    implementation("org.jsoup:jsoup:1.15.4")
+
     val commonsVersion = "2.4"
     //implementation("org.apache.directory.studio:org.apache.commons.io:$commonsVersion")
 }
