@@ -1,0 +1,45 @@
+package cn.spacexc.bilibilisdk.sdk.article.info.remote.content
+
+
+import com.google.gson.annotations.SerializedName
+
+data class ReadInfo(
+    val id: Int,
+    val category: Category,
+    val categories: List<Category>,
+    val title: String,
+    val summary: String,
+    @SerializedName("banner_url") val bannerUrl: String,
+    @SerializedName("template_id") val templateId: Int,
+    val state: Int,
+    val author: Author,
+    val reprint: Int,
+    @SerializedName("image_urls") val imageUrls: List<String>,
+    @SerializedName("publish_time") val publishTime: Long,
+    val ctime: Int,
+    val mtime: Int,
+    val stats: Stats,
+    val tags: List<Tag>,
+    val words: Int,
+    val `dynamic`: String,
+    @SerializedName("origin_image_urls") val originImageUrls: List<String>,
+    val list: Any?,
+    @SerializedName("is_like") val isLike: Boolean,
+    val media: Media,
+    @SerializedName("apply_time") val applyTime: String,
+    @SerializedName("check_time") val checkTime: String,
+    val original: Int,
+    @SerializedName("act_id") val actId: Int,
+    val dispute: Dispute,
+    val authenMark: Any?,
+    @SerializedName("cover_avid") val coverAvid: Int,
+    @SerializedName("top_video_info") val topVideoInfo: Any?,
+    val type: Int,
+    @SerializedName("check_state") val checkState: Int,
+    @SerializedName("origin_template_id") val originTemplateId: Int,
+    val content: String,
+    val keywords: String,
+    @SerializedName("version_id") val versionId: Int,
+    @SerializedName("dyn_id_str") val dynIdStr: String,
+    @SerializedName("total_art_num") val totalArtNum: Int
+)
