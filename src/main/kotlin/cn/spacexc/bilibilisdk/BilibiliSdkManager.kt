@@ -19,7 +19,7 @@ import kotlinx.coroutines.runBlocking
 
 object BilibiliSdkManager {
     var dataManager: DataManager = SimpleDataManager()
-    lateinit var cookiesManager : KtorCookiesManager
+    lateinit var cookiesManager: KtorCookiesManager
 
     fun initSdk(
         dataManager: DataManager = SimpleDataManager()
