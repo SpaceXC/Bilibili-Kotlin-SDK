@@ -2,7 +2,8 @@ package cn.spacexc.bilibilisdk.sdk.user.profile
 
 import cn.spacexc.bilibilisdk.network.KtorNetworkUtils
 import cn.spacexc.bilibilisdk.network.NetworkResponse
-import cn.spacexc.bilibilisdk.sdk.user.profile.remote.info.CurrentUserInfo
+import cn.spacexc.bilibilisdk.sdk.user.profile.remote.info.current.CurrentUserInfo
+import cn.spacexc.bilibilisdk.sdk.user.profile.remote.info.space.UserSpaceInfo
 
 /**
  * Created by XC-Qan on 2023/5/26.
@@ -15,5 +16,12 @@ import cn.spacexc.bilibilisdk.sdk.user.profile.remote.info.CurrentUserInfo
 object UserProfileInfo {
     suspend fun getCurrentUserInfo(): NetworkResponse<CurrentUserInfo> {
         return KtorNetworkUtils.get("https://api.bilibili.com/x/space/myinfo")
+    }
+
+    suspend fun getUserInfoByMid(mid: Long): NetworkResponse<UserSpaceInfo> {
+        return KtorNetworkUtils.getWithWebiSignature(
+            host = "https://api.bilibili.com/x/space/wbi/acc/info",
+            origParams = "mid=$mid&platform=web"
+        )
     }
 }

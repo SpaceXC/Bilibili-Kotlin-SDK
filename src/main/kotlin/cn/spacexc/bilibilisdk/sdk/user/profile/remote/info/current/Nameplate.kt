@@ -1,4 +1,4 @@
-package cn.spacexc.bilibilisdk.sdk.user.profile.remote.info
+package cn.spacexc.bilibilisdk.sdk.user.profile.remote.info.current
 
 data class Nameplate(
     val condition: String,
