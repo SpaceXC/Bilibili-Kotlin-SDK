@@ -4,7 +4,7 @@ package cn.spacexc.bilibilisdk.sdk.user.profile.remote.info.space
 import com.google.gson.annotations.SerializedName
 
 data class Data(
-    val mid: Int,
+    val mid: Long,
     val name: String,
     val sex: String,
     val face: String,

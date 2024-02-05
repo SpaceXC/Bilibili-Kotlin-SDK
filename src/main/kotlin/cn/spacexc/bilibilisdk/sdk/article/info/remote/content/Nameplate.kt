@@ -4,7 +4,7 @@ package cn.spacexc.bilibilisdk.sdk.article.info.remote.content
 import com.google.gson.annotations.SerializedName
 
 data class Nameplate(
-    val nid: Int,
+    val nid: Long,
     val name: String,
     val image: String,
     @SerializedName("image_small") val imageSmall: String,

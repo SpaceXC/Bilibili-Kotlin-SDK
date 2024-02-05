@@ -4,7 +4,7 @@ package cn.spacexc.bilibilisdk.sdk.article.info.remote.content
 import com.google.gson.annotations.SerializedName
 
 data class ReadInfo(
-    val id: Int,
+    val id: Long,
     val category: Category,
     val categories: List<Category>,
     val title: String,
@@ -32,7 +32,7 @@ data class ReadInfo(
     @SerializedName("act_id") val actId: Int,
     val dispute: Dispute,
     val authenMark: Any?,
-    @SerializedName("cover_avid") val coverAvid: Int,
+    @SerializedName("cover_avid") val coverAvid: Long,
     @SerializedName("top_video_info") val topVideoInfo: Any?,
     val type: Int,
     @SerializedName("check_state") val checkState: Int,

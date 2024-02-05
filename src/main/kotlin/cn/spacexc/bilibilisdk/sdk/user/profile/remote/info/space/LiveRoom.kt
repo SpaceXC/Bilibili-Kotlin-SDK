@@ -9,7 +9,7 @@ data class LiveRoom(
     val url: String,
     val title: String,
     val cover: String,
-    val roomid: Int,
+    val roomid: Long,
     val roundStatus: Int,
     @SerializedName("broadcast_type") val broadcastType: Int,
     @SerializedName("watched_show") val watchedShow: WatchedShow

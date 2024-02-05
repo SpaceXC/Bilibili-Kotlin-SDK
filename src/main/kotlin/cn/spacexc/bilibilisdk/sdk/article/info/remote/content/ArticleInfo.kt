@@ -2,7 +2,7 @@ package cn.spacexc.bilibilisdk.sdk.article.info.remote.content
 
 
 data class ArticleInfo(
-    val cvid: Int,
+    val cvid: Long,
     val readInfo: ReadInfo,
     val readViewInfo: ReadViewInfo,
     val upInfo: UpInfo,

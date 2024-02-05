@@ -4,7 +4,7 @@ package cn.spacexc.bilibilisdk.sdk.article.info.remote.content
 import com.google.gson.annotations.SerializedName
 
 data class Author(
-    val mid: Int,
+    val mid: Long,
     val name: String,
     val face: String,
     val pendant: Pendant,

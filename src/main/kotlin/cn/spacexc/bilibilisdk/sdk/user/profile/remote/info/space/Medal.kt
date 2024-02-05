@@ -4,7 +4,7 @@ package cn.spacexc.bilibilisdk.sdk.user.profile.remote.info.space
 import com.google.gson.annotations.SerializedName
 
 data class Medal(
-    val uid: Int,
+    val uid: Long,
     @SerializedName("target_id") val targetId: Int,
     @SerializedName("medal_id") val medalId: Int,
     val level: Int,
