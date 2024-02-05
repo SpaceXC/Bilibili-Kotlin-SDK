@@ -22,7 +22,8 @@ val WEBI_SIGNATURE_KEY_ENCODING_MIXIN_TABLE = listOf(
 
 object WebiSignature {
     suspend fun getWebiSignature(): NetworkResponse<String> {
-        val response = KtorNetworkUtils.get<WebiSignatureKey>("https://api.bilibili.com/nav")
+        val response =
+            KtorNetworkUtils.get<WebiSignatureKey>("https://api.bilibili.com/x/web-interface/nav")
         return if(response.code != 0) NetworkResponse.Failed(response.code, "Failed to obtain webi signature key") else {
             if (response.data?.code == 0) {
                 response.data.data.let { result ->
@@ -37,6 +38,7 @@ object WebiSignature {
                         }
                     }
                     BilibiliSdkManager.dataManager.saveString("webi_signature_key", mixedKey.substring(0..31))
+                    println("new webi key: ${mixedKey.substring(0..31)}")
                     NetworkResponse.Success(data = mixedKey)
                 }
             } else {
