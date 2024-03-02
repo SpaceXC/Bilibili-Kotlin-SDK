@@ -86,18 +86,22 @@ internal object KtorNetworkUtils {
                 val bodyInfo = response.body<BasicResponseDto>()
                 val body = response.body<T>()
                 if (bodyInfo.code != 0) {
-                    NetworkResponse.Failed(code = bodyInfo.code, message = bodyInfo.message)
+                    NetworkResponse.Failed(
+                        code = bodyInfo.code,
+                        message = bodyInfo.message,
+                        apiUrl = url
+                    )
                 } else {
-                    NetworkResponse.Success(body)
+                    NetworkResponse.Success(body, url)
                 }
             } else {
                 val body = response.body<BasicResponseDto>()
-                NetworkResponse.Failed(code = body.code, message = body.message, null)
+                NetworkResponse.Failed(code = body.code, message = body.message, null, url)
             }
         } catch (e: Exception) {
             e.printStackTrace()
             println("Error occurred: ${e.stackTraceToString()}")
-            NetworkResponse.Failed(code = -1, message = e.message ?: "Unknown error", null)
+            NetworkResponse.Failed(code = -1, message = e.message ?: "Unknown error", null, url)
         }
     }
 
@@ -172,17 +176,26 @@ internal object KtorNetworkUtils {
                 val bodyInfo = response.body<BasicResponseDto>()
                 val body = response.body<T>()
                 if (bodyInfo.code != 0) {
-                    NetworkResponse.Failed(code = bodyInfo.code, message = bodyInfo.message)
+                    NetworkResponse.Failed(
+                        code = bodyInfo.code,
+                        message = bodyInfo.message,
+                        apiUrl = url
+                    )
                 } else {
-                    NetworkResponse.Success(body)
+                    NetworkResponse.Success(body, url)
                 }
             } else {
                 val body = response.body<BasicResponseDto>()
-                NetworkResponse.Failed(code = body.code, message = body.message, null)
+                NetworkResponse.Failed(code = body.code, message = body.message, null, apiUrl = url)
             }
         } catch (e: Exception) {
             e.printStackTrace()
-            NetworkResponse.Failed(code = -1, message = e.message ?: "Unknown error", null)
+            NetworkResponse.Failed(
+                code = -1,
+                message = e.message ?: "Unknown error",
+                null,
+                apiUrl = url
+            )
         }
     }
 

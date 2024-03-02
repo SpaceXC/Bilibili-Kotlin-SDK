@@ -14,7 +14,7 @@ data class StatXX(
     val nowRank: Int,
     val reply: Int,
     @SerializedName("season_id")
-    val seasonId: Int,
+    val seasonid: Long,
     val share: Int,
     val view: Int,
     val vt: Int,

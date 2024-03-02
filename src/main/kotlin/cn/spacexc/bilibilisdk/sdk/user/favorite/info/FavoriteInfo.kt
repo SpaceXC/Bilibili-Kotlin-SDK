@@ -22,7 +22,12 @@ object FavoriteInfo {
     suspend fun getAllFavoriteFolders(
         videoAid: Long? = null
     ): NetworkResponse<FavoriteFolderList> =
-        KtorNetworkUtils.get("https://api.bilibili.com/x/v3/fav/folder/created/list-all?up_mid=${UserUtils.mid()}${if (videoAid != null) "&rid=$videoAid" else ""}")
+        if (UserUtils.mid() == null) NetworkResponse.Failed(
+            code = -101,
+            message = "未登录",
+            data = null,
+            apiUrl = "https://api.bilibili.com/x/v3/fav/folder/created/list-all?up_mid=${UserUtils.mid()}${if (videoAid != null) "&rid=$videoAid" else ""}"
+        ) else KtorNetworkUtils.get("https://api.bilibili.com/x/v3/fav/folder/created/list-all?up_mid=${UserUtils.mid()}${if (videoAid != null) "&rid=$videoAid" else ""}")
 
     suspend fun getFavouriteFolderMetadata(
         folderId: Long

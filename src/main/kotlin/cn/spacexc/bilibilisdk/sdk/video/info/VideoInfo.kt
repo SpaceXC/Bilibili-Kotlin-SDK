@@ -69,10 +69,8 @@ object VideoInfo {
     suspend fun isCoined(
         videoIdType: String,
         videoId: String?
-    ): Boolean {
-        val response =
-            KtorNetworkUtils.get<CoinState>("https://api.bilibili.com/x/web-interface/archive/coins?$videoIdType=$videoId")
-        return if (response.code != 0) false else response.data?.data?.multiply != 0
+    ): NetworkResponse<CoinState> {
+        return KtorNetworkUtils.get<CoinState>("https://api.bilibili.com/x/web-interface/archive/coins?$videoIdType=$videoId")
     }
 
     /**

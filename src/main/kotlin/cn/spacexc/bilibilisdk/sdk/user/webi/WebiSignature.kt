@@ -24,7 +24,12 @@ object WebiSignature {
     suspend fun getWebiSignature(): NetworkResponse<String> {
         val response =
             KtorNetworkUtils.get<WebiSignatureKey>("https://api.bilibili.com/x/web-interface/nav")
-        return if(response.code != 0) NetworkResponse.Failed(response.code, "Failed to obtain webi signature key") else {
+        return if (response.code != 0) NetworkResponse.Failed(
+            response.code,
+            "Failed to obtain webi signature key",
+            null,
+            "https://api.bilibili.com/x/web-interface/nav"
+        ) else {
             if (response.data?.code == 0) {
                 response.data.data.let { result ->
                     val imgUrlKey =
@@ -39,10 +44,18 @@ object WebiSignature {
                     }
                     BilibiliSdkManager.dataManager.saveString("webi_signature_key", mixedKey.substring(0..31))
                     println("new webi key: ${mixedKey.substring(0..31)}")
-                    NetworkResponse.Success(data = mixedKey)
+                    NetworkResponse.Success(
+                        data = mixedKey,
+                        apiUrl = "https://api.bilibili.com/x/web-interface/nav"
+                    )
                 }
             } else {
-                NetworkResponse.Failed(-1, "Failed to obtain webi signature key")
+                NetworkResponse.Failed(
+                    -1,
+                    "Failed to obtain webi signature key",
+                    null,
+                    "https://api.bilibili.com/x/web-interface/nav"
+                )
             }
         }
     }

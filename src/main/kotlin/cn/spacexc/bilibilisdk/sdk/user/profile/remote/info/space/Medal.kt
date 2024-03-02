@@ -5,8 +5,8 @@ import com.google.gson.annotations.SerializedName
 
 data class Medal(
     val uid: Long,
-    @SerializedName("target_id") val targetId: Int,
-    @SerializedName("medal_id") val medalId: Int,
+    @SerializedName("target_id") val targetid: Long,
+    @SerializedName("medal_id") val medalid: Long,
     val level: Int,
     @SerializedName("medal_name") val medalName: String,
     @SerializedName("medal_color") val medalColor: Int,

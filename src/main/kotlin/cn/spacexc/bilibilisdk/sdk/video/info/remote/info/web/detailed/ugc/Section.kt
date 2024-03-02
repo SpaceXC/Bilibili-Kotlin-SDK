@@ -7,7 +7,7 @@ data class Section(
     val episodes: List<Episode>,
     val id: Long,
     @SerializedName("season_id")
-    val seasonId: Int,
+    val seasonid: Long,
     val title: String,
     val type: Int
 )

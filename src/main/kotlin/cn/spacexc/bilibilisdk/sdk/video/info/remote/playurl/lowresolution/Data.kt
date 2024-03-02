@@ -9,7 +9,7 @@ data class Data(
     val from: String,
     val high_format: HighFormat,
     val last_play_cid: Long,
-    val last_play_time: Int,
+    val last_play_time: Long,
     val message: String,
     val quality: Int,
     val result: String,

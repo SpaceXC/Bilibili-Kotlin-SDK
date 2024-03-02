@@ -24,7 +24,7 @@ data class Result(
     val seek_type: String,
     val status: Int,
     val support_formats: List<SupportFormat>,
-    val timelength: Int,
+    val timelength: Long,
     val type: String,
     val video_codecid: Long,
     val video_project: Boolean

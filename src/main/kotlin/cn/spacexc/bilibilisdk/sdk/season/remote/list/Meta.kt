@@ -11,6 +11,6 @@ data class Meta(
     val name: String,
     val ptime: Int,
     @SerializedName("season_id")
-    val seasonId: Int,
+    val seasonid: Long,
     val total: Int
 )

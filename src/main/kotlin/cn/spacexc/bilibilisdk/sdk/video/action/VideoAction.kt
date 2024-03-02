@@ -4,7 +4,9 @@ import cn.spacexc.bilibilisdk.BilibiliSdkManager
 import cn.spacexc.bilibilisdk.network.BasicResponseDto
 import cn.spacexc.bilibilisdk.network.KtorNetworkUtils
 import cn.spacexc.bilibilisdk.network.NetworkResponse
+import cn.spacexc.bilibilisdk.sdk.video.action.result.CoinResult
 import cn.spacexc.bilibilisdk.sdk.video.action.result.LikeResult
+import cn.spacexc.bilibilisdk.sdk.video.action.result.SanlianResult
 import cn.spacexc.bilibilisdk.utils.UserUtils
 
 /**
@@ -38,6 +40,25 @@ object VideoAction {
         return KtorNetworkUtils.post(
             url = "http://api.bilibili.com/x/web-interface/archive/like",
             form = body
+        )
+    }
+
+    suspend fun coinVideo(
+        videoIdType: String,
+        videoId: String,
+        coinCount: Int
+    ): NetworkResponse<CoinResult> {
+        return if (UserUtils.csrf() != null) {
+            val form = mapOf(
+                videoIdType to videoId,
+                "multiply" to coinCount.toString(),
+                "csrf" to UserUtils.csrf()!!
+            )
+            KtorNetworkUtils.post("https://api.bilibili.com/x/web-interface/coin/add", form)
+        } else NetworkResponse.Failed(
+            code = -101,
+            message = "未登录",
+            apiUrl = "https://api.bilibili.com/x/web-interface/archive/like/triple"
         )
     }
 
@@ -85,5 +106,21 @@ object VideoAction {
                 form = form
             )
         }
+    }
+
+    suspend fun sanlian(
+        videoIdType: String,
+        videoId: String
+    ): NetworkResponse<SanlianResult> {
+        return if (UserUtils.csrf() != null) {
+            KtorNetworkUtils.post(
+                url = "https://api.bilibili.com/x/web-interface/archive/like/triple",
+                form = mapOf(videoIdType to videoId, "csrf" to UserUtils.csrf()!!)
+            )
+        } else NetworkResponse.Failed(
+            code = -101,
+            message = "未登录",
+            apiUrl = "https://api.bilibili.com/x/web-interface/archive/like/triple"
+        )
     }
 }

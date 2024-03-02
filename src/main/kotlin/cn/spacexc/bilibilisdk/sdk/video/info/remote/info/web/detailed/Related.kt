@@ -22,7 +22,7 @@ data class Related(
     @SerializedName("is_ogv")
     val isOgv: Boolean,
     @SerializedName("mission_id")
-    val missionId: Int,
+    val missionid: Long,
     @SerializedName("ogv_info")
     val ogvInfo: Any,
     val owner: Owner,
@@ -34,7 +34,7 @@ data class Related(
     val rcmdReason: String,
     val rights: Rights,
     @SerializedName("season_id")
-    val seasonId: Int,
+    val seasonid: Long,
     @SerializedName("season_type")
     val seasonType: Int,
     @SerializedName("short_link_v2")

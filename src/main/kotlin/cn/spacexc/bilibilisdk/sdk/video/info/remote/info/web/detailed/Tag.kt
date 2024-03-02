@@ -39,7 +39,7 @@ data class Tag(
     @SerializedName("subscribed_count")
     val subscribedCount: Int,
     @SerializedName("tag_id")
-    val tagId: Int,
+    val tagid: Long,
     @SerializedName("tag_name")
     val tagName: String,
     @SerializedName("tag_type")

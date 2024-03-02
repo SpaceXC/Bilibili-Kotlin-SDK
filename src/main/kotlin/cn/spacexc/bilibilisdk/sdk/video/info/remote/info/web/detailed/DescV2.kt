@@ -5,7 +5,7 @@ import com.google.gson.annotations.SerializedName
 
 data class DescV2(
     @SerializedName("biz_id")
-    val bizId: Int,
+    val bizid: Long,
     @SerializedName("raw_text")
     val rawText: String,
     val type: Int

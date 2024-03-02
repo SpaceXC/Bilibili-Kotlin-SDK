@@ -12,8 +12,8 @@ data class Episode(
     val id: Long,
     val page: PageX,
     @SerializedName("season_id")
-    val seasonId: Int,
+    val seasonid: Long,
     @SerializedName("section_id")
-    val sectionId: Int,
+    val sectionid: Long,
     val title: String
 )

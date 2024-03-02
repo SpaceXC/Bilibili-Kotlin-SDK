@@ -27,7 +27,7 @@ data class Arc(
     val state: Int,
     val title: String,
     @SerializedName("type_id")
-    val typeId: Int,
+    val typeid: Long,
     @SerializedName("type_name")
     val typeName: String,
     val videos: Int,

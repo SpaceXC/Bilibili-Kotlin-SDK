@@ -37,7 +37,7 @@ data class View(
     @SerializedName("like_icon")
     val likeIcon: String,
     @SerializedName("mission_id")
-    val missionId: Int,
+    val missionid: Long,
     @SerializedName("need_jump_bv")
     val needJumpBv: Boolean,
     @SerializedName("no_cache")

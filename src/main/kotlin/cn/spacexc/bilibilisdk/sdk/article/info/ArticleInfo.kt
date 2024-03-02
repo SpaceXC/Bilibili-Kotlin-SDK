@@ -17,7 +17,11 @@ object ArticleInfo {
         articleId: Long
     ): NetworkResponse<Article> {
         val response = KtorNetworkUtils.getBytes("https://www.bilibili.com/read/cv$articleId")
-            ?: return NetworkResponse.Failed(-1, "Network failed")
+            ?: return NetworkResponse.Failed(
+                -1,
+                "Network failed",
+                apiUrl = "https://www.bilibili.com/read/cv$articleId"
+            )
         val documentHtml = String(response)
         val document = Jsoup.parse(documentHtml)
 
@@ -36,7 +40,8 @@ object ArticleInfo {
             Article(
                 articleInfo,
                 articleContentDocument.body().children()
-            )
+            ),
+            "https://www.bilibili.com/read/cv$articleId"
         )
     }
 }
