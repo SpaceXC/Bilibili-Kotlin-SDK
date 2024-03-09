@@ -24,6 +24,6 @@ object FollowedUserInfo {
         page: Int,
         tagId: Long
     ): NetworkResponse<FollowedUsersGroup> {
-        return KtorNetworkUtils.get("https://api.bilibili.com/x/relation/tag?mid=${UserUtils.mid()}&tagid=$tagId&pn=$page&ps=$itemsPerPage")
+        return KtorNetworkUtils.get("https://api.bilibili.com/x/relation/tags?mid=${UserUtils.mid()}&tagid=$tagId&pn=$page&ps=$itemsPerPage")
     }
 }
