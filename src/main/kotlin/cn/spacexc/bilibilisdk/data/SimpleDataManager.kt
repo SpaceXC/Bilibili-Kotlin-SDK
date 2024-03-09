@@ -12,7 +12,7 @@ import kotlinx.coroutines.flow.flow
  */
 
 class SimpleDataManager : DataManager {
-    override suspend fun saveString(name: String, value: String) {
+    override suspend fun saveString(name: String, value: String?) {
 
     }
 
@@ -21,6 +21,10 @@ class SimpleDataManager : DataManager {
     }
 
     override suspend fun saveBool(name: String, value: Boolean) {
+
+    }
+
+    override suspend fun deleteString(name: String) {
 
     }
 

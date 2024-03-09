@@ -12,12 +12,30 @@ import cn.spacexc.bilibilisdk.utils.remote.UserExitResult
  * 给！爷！写！注！释！
  */
 
-object UserUtils  {
+object UserUtils {
     suspend fun isUserLoggedIn(): Boolean =
         !BilibiliSdkManager.cookiesManager.getCookieByName("SESSDATA")?.value.isNullOrEmpty()
 
     suspend fun mid(): Long? =
-        BilibiliSdkManager.cookiesManager.getCookieByName("DedeUserID")?.value?.toLong()
+        BilibiliSdkManager.dataManager.getString("currentUid")
+            ?.toLongOrNull()//.cookiesManager.getCookieByName("DedeUserID")?.value?.toLongOrNull()
+
+    suspend fun setCurrentUid(uid: Long?) =
+        BilibiliSdkManager.dataManager.saveString("currentUid", uid.toString())
+
+    suspend fun addUser(mid: Long) {
+        BilibiliSdkManager.dataManager.apply {
+            val oldList: List<Long> =
+                getString("addedUsers")?.split(",")?.map { it.toLong() } ?: emptyList()
+            if (oldList.contains(mid)) return@apply
+            saveString("addedUsers", (oldList + mid).joinToString(","))
+        }
+    }
+
+    suspend fun getUsers(): List<Long> {
+        val list = BilibiliSdkManager.dataManager.getString("addedUsers")?.split(",") ?: emptyList()
+        return list.map { it.toLong() }
+    }
 
     suspend fun csrf(): String? =
         BilibiliSdkManager.cookiesManager.getCookieByName("bili_jct")?.value
@@ -35,6 +53,11 @@ object UserUtils  {
             url = "https://passport.bilibili.com/login/exit/v2",
             form = form
         )
-        return response.code == 0
+        //val succeed = response.code == 0
+        //if(succeed) {
+        BilibiliSdkManager.cookiesManager.deleteAllCookies()
+        setCurrentUid(null)
+        //}
+        return true //succeed
     }
 }

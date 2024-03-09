@@ -1,10 +1,12 @@
 package cn.spacexc.bilibilisdk.data
 
 import com.google.gson.Gson
-import io.ktor.client.plugins.cookies.*
-import io.ktor.http.*
-import io.ktor.util.*
-import io.ktor.util.date.*
+import io.ktor.http.Cookie
+import io.ktor.http.Url
+import io.ktor.http.hostIsIp
+import io.ktor.http.isSecure
+import io.ktor.util.date.GMTDate
+import io.ktor.util.toLowerCasePreservingASCIIRules
 import kotlinx.atomicfu.AtomicLong
 import kotlinx.atomicfu.atomic
 import kotlinx.coroutines.sync.Mutex
@@ -19,7 +21,7 @@ import kotlin.math.min
  * 给！爷！写！注！释！
  */
 
-class KtorCookiesManager(private val dataManager: DataManager) : CookiesStorage {
+class KtorCookiesManager(private val dataManager: DataManager) : CookiesManager {
     private var container: MutableList<Cookie> = mutableListOf()
     private val oldestCookie: AtomicLong = atomic(0L)
     private val mutex = Mutex()
@@ -33,7 +35,7 @@ class KtorCookiesManager(private val dataManager: DataManager) : CookiesStorage 
             return@withLock container/*.filter { it.matches(requestUrl) }*/
         }
 
-    suspend fun getCookieByName(name: String): Cookie? =
+    override suspend fun getCookieByName(name: String): Cookie? =
         mutex.withLock {
             refreshCookies()
             val date = GMTDate()
@@ -41,6 +43,10 @@ class KtorCookiesManager(private val dataManager: DataManager) : CookiesStorage 
 
             return@withLock container.find { it.name == name }
         }
+
+    override suspend fun deleteAllCookies() {
+        dataManager
+    }
 
     override suspend fun addCookie(requestUrl: Url, cookie: Cookie): Unit = mutex.withLock {
         refreshCookies()

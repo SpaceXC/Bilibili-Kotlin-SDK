@@ -1,5 +1,6 @@
 package cn.spacexc.bilibilisdk
 
+import cn.spacexc.bilibilisdk.data.CookiesManager
 import cn.spacexc.bilibilisdk.data.DataManager
 import cn.spacexc.bilibilisdk.data.KtorCookiesManager
 import cn.spacexc.bilibilisdk.data.SimpleDataManager
@@ -19,14 +20,15 @@ import kotlinx.coroutines.runBlocking
 
 object BilibiliSdkManager {
     var dataManager: DataManager = SimpleDataManager()
-    lateinit var cookiesManager: KtorCookiesManager
+    lateinit var cookiesManager: CookiesManager
 
     fun initSdk(
-        dataManager: DataManager = SimpleDataManager()
+        dataManager: DataManager = SimpleDataManager(),
+        cookiesManager: CookiesManager = KtorCookiesManager(dataManager)
     ) {
         println("Bilibili SDK for kotlin by XC")
         this.dataManager = dataManager
-        cookiesManager = KtorCookiesManager(dataManager)
+        this.cookiesManager = cookiesManager
         println("DataManager: ${dataManager.javaClass}")
         println("Init cookies......")
         CoroutineScope(Dispatchers.IO).launch {

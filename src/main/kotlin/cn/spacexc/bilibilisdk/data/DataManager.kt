@@ -11,9 +11,11 @@ import kotlinx.coroutines.flow.Flow
  */
 
 interface DataManager {
-    suspend fun saveString(name: String, value: String)
+    suspend fun saveString(name: String, value: String?)
     suspend fun saveInt(name: String, value: Int)
     suspend fun saveBool(name: String, value: Boolean)
+
+    suspend fun deleteString(name: String)
 
     suspend fun getString(name: String, defVal: String? = null): String?
     suspend fun getInt(name: String, defVal: Int? = null): Int?
