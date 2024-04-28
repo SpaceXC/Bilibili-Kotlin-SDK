@@ -1,7 +1,7 @@
 package cn.spacexc.bilibilisdk.sdk.bangumi.info.remote
 
 data class StatXX(
-    val coins: Int,
+    val coins: Double,
     val danmakus: Int,
     val favorite: Int,
     val favorites: Int,

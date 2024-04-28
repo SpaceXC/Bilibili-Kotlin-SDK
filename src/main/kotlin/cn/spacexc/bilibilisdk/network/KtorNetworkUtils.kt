@@ -4,7 +4,7 @@ import cn.spacexc.bilibilisdk.BilibiliSdkManager
 import cn.spacexc.bilibilisdk.utils.EncryptUtils
 import io.ktor.client.HttpClient
 import io.ktor.client.call.body
-import io.ktor.client.engine.cio.CIO
+import io.ktor.client.engine.android.Android
 import io.ktor.client.plugins.contentnegotiation.ContentNegotiation
 import io.ktor.client.plugins.cookies.HttpCookies
 import io.ktor.client.plugins.logging.LogLevel
@@ -55,7 +55,7 @@ val configurations = mapOf(
 )
 
 internal object KtorNetworkUtils {
-    private val client = HttpClient(CIO) {
+    private val client = HttpClient(Android) {
         install(ContentNegotiation) {
             gson {
                 serializeNulls()
@@ -69,7 +69,7 @@ internal object KtorNetworkUtils {
         install(HttpCookies) {
             storage = BilibiliSdkManager.cookiesManager
         }
-        expectSuccess = true
+        expectSuccess = false
     }
 
     suspend inline fun <reified T> get(
@@ -77,7 +77,8 @@ internal object KtorNetworkUtils {
         builder: HttpRequestBuilder.() -> Unit = {}
     ): NetworkResponse<T> {
         return try {
-            val response = client.get(url) {
+            val realUrl = if (url.startsWith("http://")) url.replace("http://", "https://") else url
+            val response = client.get(realUrl) {
                 userAgent(USER_AGENT)
                 header("Referer", BASE_URL)
                 builder()
@@ -110,7 +111,8 @@ internal object KtorNetworkUtils {
         builder: HttpRequestBuilder.() -> Unit = {}
     ): ByteArray? {
         return try {
-            val response = client.get(url) {
+            val realUrl = if (url.startsWith("http://")) url.replace("http://", "https://") else url
+            val response = client.get(realUrl) {
                 userAgent(USER_AGENT)
                 header("Referer", BASE_URL)
                 builder()
@@ -167,7 +169,8 @@ internal object KtorNetworkUtils {
             }
         }
         return try {
-            val response = client.submitForm(formParameters = params, url = url) {
+            val realUrl = if (url.startsWith("http://")) url.replace("http://", "https://") else url
+            val response = client.submitForm(formParameters = params, url = realUrl) {
                 userAgent(USER_AGENT)
                 header("Referer", BASE_URL)
                 builder()

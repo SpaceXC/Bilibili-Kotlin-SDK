@@ -16,7 +16,7 @@ data class Data(
     val jointime: Int,
     val moral: Int,
     val silence: Int,
-    val coins: Int,
+    val coins: Double,
     @SerializedName("fans_badge") val fansBadge: Boolean,
     @SerializedName("fans_medal") val fansMedal: FansMedal,
     val official: Official?,
