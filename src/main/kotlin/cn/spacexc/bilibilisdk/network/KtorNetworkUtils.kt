@@ -83,6 +83,10 @@ internal object KtorNetworkUtils {
                 header("Referer", BASE_URL)
                 builder()
             }
+            with(BilibiliSdkManager.cookiesManager) {
+                response.interceptAndSaveCookies()
+            }
+
             return if (response.status == HttpStatusCode.OK) {
                 val bodyInfo = response.body<BasicResponseDto>()
                 val body = response.body<T>()
@@ -116,6 +120,9 @@ internal object KtorNetworkUtils {
                 userAgent(USER_AGENT)
                 header("Referer", BASE_URL)
                 builder()
+            }
+            with(BilibiliSdkManager.cookiesManager) {
+                response.interceptAndSaveCookies()
             }
             return response.readBytes()
         } catch (e: Exception) {
@@ -174,6 +181,9 @@ internal object KtorNetworkUtils {
                 userAgent(USER_AGENT)
                 header("Referer", BASE_URL)
                 builder()
+            }
+            with(BilibiliSdkManager.cookiesManager) {
+                response.interceptAndSaveCookies()
             }
             return if (response.status == HttpStatusCode.OK) {
                 val bodyInfo = response.body<BasicResponseDto>()

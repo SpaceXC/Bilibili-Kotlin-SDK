@@ -4,6 +4,7 @@ import cn.spacexc.bilibilisdk.network.KtorNetworkUtils
 import cn.spacexc.bilibilisdk.network.NetworkResponse
 import cn.spacexc.bilibilisdk.sdk.user.profile.remote.info.current.CurrentUserInfo
 import cn.spacexc.bilibilisdk.sdk.user.profile.remote.info.space.UserSpaceInfo
+import cn.spacexc.bilibilisdk.sdk.user.profile.remote.list.UserCardList
 import cn.spacexc.bilibilisdk.sdk.user.profile.remote.stat.UserStat
 import cn.spacexc.bilibilisdk.sdk.user.profile.remote.video.UserSpaceVideos
 import cn.spacexc.bilibilisdk.sdk.user.profile.remote.video.app.AppUserSpaceVideos
@@ -83,4 +84,8 @@ object UserProfileInfo {
             origParams = "actionKey=appkey&build=76600100&c_locale=zh-Hans_CN&player_net=1&pn=$page&ps=$itemsPerPage&s_locale=zh-Hans_CH&ts=${System.currentTimeMillis()}&vmid=$mid"
         )
     }
+
+    suspend fun getUserCardsInBatch(uids: List<Long>) =
+        KtorNetworkUtils.get<UserCardList>("\n" +
+                "https://api.bilibili.com/x/polymer/pc-electron/v1/user/cards?uids=${uids.joinToString(",")}&build=0&mobi_app=web")
 }

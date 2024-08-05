@@ -1,6 +1,7 @@
 package cn.spacexc.bilibilisdk.data
 
 import com.google.gson.Gson
+import io.ktor.client.statement.HttpResponse
 import io.ktor.http.Cookie
 import io.ktor.http.Url
 import io.ktor.http.hostIsIp
@@ -46,6 +47,10 @@ class KtorCookiesManager(private val dataManager: DataManager) : CookiesManager 
 
     override suspend fun deleteAllCookies() {
         dataManager
+    }
+
+    override suspend fun HttpResponse.interceptAndSaveCookies() {
+
     }
 
     override suspend fun addCookie(requestUrl: Url, cookie: Cookie): Unit = mutex.withLock {

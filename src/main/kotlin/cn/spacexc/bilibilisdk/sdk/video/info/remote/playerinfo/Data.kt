@@ -41,5 +41,6 @@ data class Data(
     val subtitle: SubtitleList,
     val toast_block: Boolean,
     val view_points: List<ViewPoint>,
-    val vip: Vip
+    val vip: Vip,
+    val interaction: Interaction?
 )

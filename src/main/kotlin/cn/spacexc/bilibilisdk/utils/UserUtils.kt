@@ -3,6 +3,8 @@ package cn.spacexc.bilibilisdk.utils
 import cn.spacexc.bilibilisdk.BilibiliSdkManager
 import cn.spacexc.bilibilisdk.network.KtorNetworkUtils
 import cn.spacexc.bilibilisdk.utils.remote.UserExitResult
+import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.map
 
 /**
  * Created by XC-Qan on 2023/4/5.
@@ -19,6 +21,9 @@ object UserUtils {
     suspend fun mid(): Long? =
         BilibiliSdkManager.dataManager.getString("currentUid")
             ?.toLongOrNull()//.cookiesManager.getCookieByName("DedeUserID")?.value?.toLongOrNull()
+    fun midFlow(): Flow<Long?> =
+        BilibiliSdkManager.dataManager.getStringFlow("currentUid").map { it.toLongOrNull() }
+
 
     suspend fun setCurrentUid(uid: Long?) =
         BilibiliSdkManager.dataManager.saveString("currentUid", uid.toString())

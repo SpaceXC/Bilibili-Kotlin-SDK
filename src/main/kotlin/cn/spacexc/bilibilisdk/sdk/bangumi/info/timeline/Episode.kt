@@ -13,7 +13,7 @@ data class Episode(
     val plays: String,
     val pub_index: String,
     val pub_time: String,
-    val pub_ts: Int,
+    val pub_ts: Long,
     val published: Int,
     val season_id: Long,
     val square_cover: String,

@@ -19,6 +19,7 @@ object HistoryInfo {
     suspend fun getHistoryByPage(
         lastTimeStamp: Long = 0
     ): NetworkResponse<HistoryList> {
+        //return KtorNetworkUtils.get("https://api.bilibili.com/x/web-interface/history/cursor?max=0&view_at=$lastTimeStamp&business=")   //官方在这里就没有写business参数，大概是限定返回结果类型的参数
         return KtorNetworkUtils.get("https://api.bilibili.com/x/web-interface/history/cursor?max=0&view_at=$lastTimeStamp&business=")   //官方在这里就没有写business参数，大概是限定返回结果类型的参数
     }
 }
