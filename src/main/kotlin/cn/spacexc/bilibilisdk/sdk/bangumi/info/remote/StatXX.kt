@@ -8,6 +8,6 @@ data class StatXX(
     val likes: Int,
     val reply: Int,
     val share: Int,
-    val views: Int,
+    val views: Long,
     val vt: Int
 )
