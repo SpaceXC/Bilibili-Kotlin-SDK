@@ -101,8 +101,9 @@ object VideoAction {
                 "platform" to "android",
                 "csrf" to (UserUtils.csrf() ?: "")
             )
+            println("report: $form")
             KtorNetworkUtils.post<String>(
-                url = "https://api.bilibili.com/x/v2/history/report",
+                url = "https://api.bilibili.com/x/v2/history/report?${form.entries.joinToString("&") { "${it.key}=${it.value}" }}",
                 form = form
             )
         }
