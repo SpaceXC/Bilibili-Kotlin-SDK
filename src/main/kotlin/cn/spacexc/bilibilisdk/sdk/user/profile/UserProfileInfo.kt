@@ -24,7 +24,7 @@ const val dmImgCoverStr =
     "QU5HTEUgKEFwcGxlLCBBTkdMRSBNZXRhbCBSZW5kZXJlcjogQXBwbGUgTTEgUHJvLCBVbnNwZWNpZmllZCBWZXJzaW9uKUdvb2dsZSBJbmMuIChBcHBsZS"
 const val dmImgInter =
     "%7B%22ds%22:[%7B%22t%22:1,%22c%22:%22bi1udW%22,%22p%22:[1094,46,938],%22s%22:[380,475,800]%7D],%22wh%22:[18,6,6],%22of%22:[104,208,104]%7D"
-//理论上这一堆值都是要动态计算的但是貌似是和浏览器渲染相关的，但是是风控相关的所以貌似直接用固定的也没关系。这里直接随便找一个请求复制粘贴好了。
+//理论上这一堆值都是要动态计算的但是貌似是和浏览器渲染相关的，而且是风控相关的所以貌似直接用固定的也没关系。这里直接随便找一个请求复制粘贴好了。
 
 
 object UserProfileInfo {
@@ -35,7 +35,18 @@ object UserProfileInfo {
     suspend fun getUserInfoByMid(mid: Long): NetworkResponse<UserSpaceInfo> {
         return KtorNetworkUtils.getWithWebiSignature(
             host = "https://api.bilibili.com/x/space/wbi/acc/info",
-            origParams = "mid=$mid&platform=web"
+            origParams = "mid=$mid" +
+                    "&token=" +
+                    "&platform=web" +
+                    "&web_location=1550101" +
+                    "&dm_img_list=[]" +
+                    "&dm_img_str=V2ViR0wgMS4wIChPcGVuR0wgRVMgMi4wIENocm9taXVtKQ" +
+                    "&dm_cover_img_str=QU5HTEUgKEFwcGxlLCBBTkdMRSBNZXRhbCBSZW5kZXJlcjogQXBwbGUgTTEgUHJvLCBVbnNwZWNpZmllZCBWZXJzaW9uKUdvb2dsZSBJbmMuIChBcHBsZS&dm_img_inter=%7B%22ds%22:[],%22wh%22:[4283,3436,87],%22of%22:[397,794,397]%7D" +
+                    "&w_webid=eyJhbGciOiJSUzI1NiIsInR5cCI6IkpXVCJ9.eyJzcG1faWQiOiIwLjAiLCJidXZpZCI6IkYxQzY0RUZCLTg3MzUtNzc0OC1BRjk4LThENkZBMjRERDI4QjI0OTAwaW5mb2MiLCJ1c2VyX2FnZW50IjoiTW96aWxsYS81LjAgKE1hY2ludG9zaDsgSW50ZWwgTWFjIE9TIFggMTBfMTVfNykgQXBwbGVXZWJLaXQvNTM3LjM2IChLSFRNTCwgbGlrZSBHZWNrbykgQ2hyb21lLzEzMC4wLjAuMCBTYWZhcmkvNTM3LjM2IiwiYnV2aWRfZnAiOiJGMUM2NEVGQi04NzM1LTc3NDgtQUY5OC04RDZGQTI0REQyOEIyNDkwMGluZm9jIiwiYmlsaV90aWNrZXQiOiI0OTlkY2EyMGVlZWY1YTc4YzhlNTJhNTM0YmEwNTVjMCIsImNyZWF0ZWRfYXQiOjE3MzE1MDk5MjEsInR0bCI6ODY0MDAsInVybCI6Ii80ODA4MTY2OTk_c3BtX2lkX2Zyb209MzMzLjEwMDcuMC4wIiwicmVzdWx0Ijoibm9ybWFsIiwiaXNzIjoiZ2FpYSIsImlhdCI6MTczMTUwOTkyMX0.lTnhW5Jg-LZCig7Y2aSNdt1q42VcUc0m1unPoocxbdSxOoHzfdKa0C_Jx7z4D6gJNk8DHBQ2Q7ByMGauHz034lVxKPPfejXmMUT9oQu_tHxobBcI77dr47qPhb8U22ZdI1GPwI-E7i8BML86g4m8-zAwY4aMaxo4ecvYk8taIXpBuufiv1suJgKJ-1wvCpZynVUckHs0PVrKVKIQ6Mn8F8HOBm9viyKbgMBeoAYXGRgzAwp5OgjCoDe_kM_GCoZ4H5JZw5m_Km7IGzjjze8XrCgKa5B5VpFEdxyUISoqlXEJPzwoxAM0f0rhfKQNFyh2SyXAHe66HwtNCGSq8usWYw"
+            //"&w_rid=3b92b73ba6e416774c3f53cf59b471cc" +
+            //"&wts=1731509921"
+            ,
+            withExtraParameters = false
         )
     }
 

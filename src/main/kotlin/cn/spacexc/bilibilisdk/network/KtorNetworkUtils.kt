@@ -1,10 +1,14 @@
 package cn.spacexc.bilibilisdk.network
 
 import cn.spacexc.bilibilisdk.BilibiliSdkManager
+import cn.spacexc.bilibilisdk.sdk.user.profile.dmImgCoverStr
+import cn.spacexc.bilibilisdk.sdk.user.profile.dmImgInter
+import cn.spacexc.bilibilisdk.sdk.user.profile.dmImgList
+import cn.spacexc.bilibilisdk.sdk.user.profile.dmImgStr
 import cn.spacexc.bilibilisdk.utils.EncryptUtils
 import io.ktor.client.HttpClient
 import io.ktor.client.call.body
-import io.ktor.client.engine.android.Android
+import io.ktor.client.engine.cio.CIO
 import io.ktor.client.plugins.contentnegotiation.ContentNegotiation
 import io.ktor.client.plugins.cookies.HttpCookies
 import io.ktor.client.plugins.logging.LogLevel
@@ -16,6 +20,7 @@ import io.ktor.client.request.forms.submitForm
 import io.ktor.client.request.get
 import io.ktor.client.request.header
 import io.ktor.client.request.prepareGet
+import io.ktor.client.statement.bodyAsText
 import io.ktor.client.statement.readBytes
 import io.ktor.http.HttpStatusCode
 import io.ktor.http.Parameters
@@ -25,6 +30,7 @@ import io.ktor.serialization.gson.gson
 import io.ktor.utils.io.ByteReadChannel
 import io.ktor.utils.io.core.isEmpty
 import io.ktor.utils.io.core.readBytes
+import io.ktor.utils.io.readRemaining
 import kotlinx.coroutines.runBlocking
 import java.io.File
 
@@ -55,7 +61,7 @@ val configurations = mapOf(
 )
 
 internal object KtorNetworkUtils {
-    private val client = HttpClient(Android) {
+    private val client = HttpClient(CIO) {
         install(ContentNegotiation) {
             gson {
                 serializeNulls()
@@ -110,6 +116,35 @@ internal object KtorNetworkUtils {
         }
     }
 
+    suspend inline fun getString(
+        url: String,
+        builder: HttpRequestBuilder.() -> Unit = {}
+    ): NetworkResponse<String> {
+        return try {
+            val realUrl = if (url.startsWith("http://")) url.replace("http://", "https://") else url
+            val response = client.get(realUrl) {
+                userAgent(USER_AGENT)
+                header("Referer", BASE_URL)
+                builder()
+            }
+            with(BilibiliSdkManager.cookiesManager) {
+                response.interceptAndSaveCookies()
+            }
+
+            return if (response.status == HttpStatusCode.OK) {
+                val body = response.bodyAsText()
+                NetworkResponse.Success(body, url)
+            } else {
+                val body = response.body<BasicResponseDto>()
+                NetworkResponse.Failed(code = body.code, message = body.message, null, url)
+            }
+        } catch (e: Exception) {
+            e.printStackTrace()
+            println("Error occurred: ${e.stackTraceToString()}")
+            NetworkResponse.Failed(code = -1, message = e.message ?: "Unknown error", null, url)
+        }
+    }
+
     suspend fun getBytes(
         url: String,
         builder: HttpRequestBuilder.() -> Unit = {}
@@ -131,10 +166,14 @@ internal object KtorNetworkUtils {
         }
     }
 
+    /**
+     * @param withExtraParameters 加上dm_img_inters那些鬼东西
+     */
     suspend inline fun <reified T> getWithWebiSignature(
         host: String,
         origParams: String,
         webiSignatureKey: String? = null,
+        withExtraParameters: Boolean = false,
         builder: HttpRequestBuilder.() -> Unit = {}
     ): NetworkResponse<T> {
         //return try {
@@ -142,7 +181,11 @@ internal object KtorNetworkUtils {
             webiSignatureKey ?: BilibiliSdkManager.dataManager.getString("webi_signature_key", null)
         println("signKey: $key")
         val signedParams = if (!key.isNullOrEmpty()) {
-            var params = origParams.split("&").sorted().joinToString(separator = "&")
+            var params = (origParams + if (withExtraParameters) "&dm_img_list=$dmImgList" +
+                    "&dm_img_str=$dmImgStr" +
+                    "&dm_cover_img_str=$dmImgCoverStr" +
+                    "&dm_img_inter=$dmImgInter" else "").split("&").sorted()
+                .joinToString(separator = "&")
             params += "&wts=${System.currentTimeMillis()}"
             val wrid = EncryptUtils.md5(params + key)
             params += "&w_rid=$wrid"
