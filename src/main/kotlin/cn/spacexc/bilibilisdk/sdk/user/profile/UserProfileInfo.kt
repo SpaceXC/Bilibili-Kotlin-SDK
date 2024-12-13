@@ -2,6 +2,7 @@ package cn.spacexc.bilibilisdk.sdk.user.profile
 
 import cn.spacexc.bilibilisdk.network.KtorNetworkUtils
 import cn.spacexc.bilibilisdk.network.NetworkResponse
+import cn.spacexc.bilibilisdk.sdk.user.card.UserCard
 import cn.spacexc.bilibilisdk.sdk.user.profile.remote.info.current.CurrentUserInfo
 import cn.spacexc.bilibilisdk.sdk.user.profile.remote.info.space.UserSpaceInfo
 import cn.spacexc.bilibilisdk.sdk.user.profile.remote.list.UserCardList
@@ -32,6 +33,13 @@ object UserProfileInfo {
         return KtorNetworkUtils.get("https://api.bilibili.com/x/space/myinfo")
     }
 
+    /**
+     * 这个风控真的太严了...
+     */
+    @Deprecated(
+        "这个风控真的太严了...",
+        replaceWith = ReplaceWith("UserProfileInfo.getUserCardByMid(mid)")
+    )
     suspend fun getUserInfoByMid(mid: Long): NetworkResponse<UserSpaceInfo> {
         return KtorNetworkUtils.getWithWebiSignature(
             host = "https://api.bilibili.com/x/space/wbi/acc/info",
@@ -49,6 +57,9 @@ object UserProfileInfo {
             withExtraParameters = false
         )
     }
+
+    suspend fun getUserCardByMid(mid: Long): NetworkResponse<UserCard> =
+        KtorNetworkUtils.get("https://api.bilibili.com/x/web-interface/card?mid=$mid")
 
     suspend fun getUserStatByMid(mid: Long): NetworkResponse<UserStat> =
         KtorNetworkUtils.getWithWebiSignature(

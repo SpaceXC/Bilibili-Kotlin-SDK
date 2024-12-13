@@ -3,6 +3,7 @@ package cn.spacexc.bilibilisdk.sdk.video.info
 import cn.spacexc.bilibilisdk.network.KtorNetworkUtils
 import cn.spacexc.bilibilisdk.network.NetworkResponse
 import cn.spacexc.bilibilisdk.network.configurations
+import cn.spacexc.bilibilisdk.sdk.video.info.remote.comment.VideoComment
 import cn.spacexc.bilibilisdk.sdk.video.info.remote.info.app.AppVideoInfo
 import cn.spacexc.bilibilisdk.sdk.video.info.remote.info.web.WebVideoInfo
 import cn.spacexc.bilibilisdk.sdk.video.info.remote.info.web.detailed.WebVideoDetailedInformation
@@ -17,7 +18,6 @@ import cn.spacexc.bilibilisdk.sdk.video.info.remote.state.CoinState
 import cn.spacexc.bilibilisdk.sdk.video.info.remote.state.FavState
 import cn.spacexc.bilibilisdk.sdk.video.info.remote.state.LikeState
 import cn.spacexc.bilibilisdk.sdk.video.info.remote.subtitle.SubtitleFile
-//import org.apache.commons.io.IOUtils
 import java.io.ByteArrayOutputStream
 import java.io.File
 import java.io.IOException
@@ -56,6 +56,12 @@ object VideoInfo {
             origParams = "build=${configurations["build"]}&$videoIdType=$videoId&mobi_app=${configurations["mobi_app"]}&plat=0&platform=${configurations["platform"]}&ts=${(System.currentTimeMillis() / 1000).toInt()}"
         )
     }
+
+    suspend fun getVideoComments(
+        videoAid: String,
+        currentPage: Int
+    ) =
+        KtorNetworkUtils.get<VideoComment>("https://api.bilibili.com/x/v2/reply/main?type=1&sort=1&next=$currentPage&oid=$videoAid")
 
     suspend fun isLiked(
         videoIdType: String,
